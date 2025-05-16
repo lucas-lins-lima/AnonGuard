@@ -44,7 +44,8 @@ O AnonGuard é um sistema projetado para oferecer um espaço seguro e anônimo p
 
 Abaixo, a organização para os diretórios e arquivos principais do AnonGuard:
 
-```AnonGuard/
+```text
+AnonGuard/
 │
 ├── .github/
 │   └── ISSUE_TEMPLATE/
@@ -103,7 +104,8 @@ Abaixo, a organização para os diretórios e arquivos principais do AnonGuard:
 │   └── agent/
 │       └── test_orchestrator.py
 │
-└── main.py´´´
+└── main.py
+text´´´
 
 *(Para uma descrição mais detalhada da estrutura e responsabilidades de cada módulo, consulte o código dentro de `src/`)*
 
