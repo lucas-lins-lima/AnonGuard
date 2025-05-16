@@ -1,58 +1,297 @@
-1. Ideia Principal
+# AnonGuard 🛡️💬
 
-Nome do Projeto: AnonGuard Proposta: Chatbot + Agente Autônomo que:
+**Chatbot + Agente Autônomo para suporte emocional e denúncias anônimas seguras.**
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+O AnonGuard é um sistema projetado para oferecer um espaço seguro e anônimo para vítimas buscarem apoio emocional e orientação. Ele combina um chatbot empático, desenvolvido com a IA generativa Google Gemini, com um agente autônomo capaz de realizar ações como a criação de relatórios de denúncia criptografados e o agendamento de lembretes.
 
-Oferece suporte emocional empático via Gemini (IA generativa), utilizando técnicas de prompt engineering para garantir respostas seguras e de apoio em situações sensíveis.
+**Funcionalidades Chave:**
+* **Suporte Emocional Empático:** Utiliza o Gemini com técnicas de prompt engineering para fornecer respostas seguras e de apoio.
+* **Identificação de Intenção:** Detecta a necessidade do usuário (suporte, denúncia, informação, agendamento).
+* **Coleta de Dados Estruturada:** Conduz conversas para coletar informações relevantes para denúncias ou agendamentos.
+* **Denúncias Anônimas Seguras:** Permite a criação de relatórios (atualmente simulado como texto, futuramente PDF) a partir da conversa, que são criptografados (AES-256) e enviados para o Google Drive (atualmente simulado).
+* **Agendamento:** Coleta informações para agendar lembretes ou eventos no Google Calendar (atualmente simulado).
+* **Orientação e Informação:** (Funcionalidade futura) Funcionará como uma base de conhecimento conversacional.
 
-Orienta vítimas sobre direitos, próximos passos e canais de ajuda confiáveis (integrado com bases de dados de ONGs ou informações pré-carregadas), funcionando como um knowledge base acessível conversacionalmente.
+---
 
-Permite denúncias anônimas com relatórios estruturados (Google Drive/PDF), onde o agente autônomo coleta dados específicos durante a conversa e os formata para um documento seguro, acionado pelo usuário. O foco na anonimidade é crucial para encorajar vítimas a buscar ajuda sem medo de retaliação.
+## ✨ Tecnologias Utilizadas
 
+* **IA Generativa:** Google Gemini (via API `google-generativeai`)
+* **Prototipagem de Prompts:** Google AI Studio (para design inicial dos prompts)
+* **Ambiente de Desenvolvimento:** Python (inicialmente em Google Colab, migrando para scripts `.py`)
+* **Bibliotecas Python Atuais e Planejadas:**
+    * `google-generativeai`: Para interação com a API do Gemini.
+    * `pycryptodome`: Para criptografia AES-256 (simulação da proteção de dados).
+    * `python-dotenv` (planejado): Para gerenciar variáveis de ambiente localmente.
+    * `google-api-python-client`, `google-auth-httplib2`, `google-auth-oauthlib` (planejado): Para integração com Google Drive & Calendar APIs.
+    * `reportlab` ou `fpdf` (planejado): Para geração de relatórios em PDF.
+* **APIs Google (Integração Futura):**
+    * Google Drive API: Armazenamento seguro de relatórios.
+    * Google Calendar API: Agendamento de lembretes/consultas.
+* **Notificações:**
+    * Discord Webhook: Alertas anonimizados.
 
+---
 
-2. Tecnologias e Ferramentas
+## STATUS DO PROJETO
+**Em Desenvolvimento Ativo.** Muitas funcionalidades centrais como a interação com o Gemini e a lógica de coleta de dados estão implementadas. As integrações com APIs externas (Google Drive, Calendar) e a geração de PDF são atualmente **simuladas** e estão em processo de desenvolvimento para implementação real.
 
-Google Gemini (API Key): A espinha dorsal conversacional. Usado para entender a linguagem natural, manter o contexto da conversa, oferecer suporte emocional e extrair informações relevantes para a denúncia/ação do agente. O prompt deve ser finamente ajustado para lidar com temas delicados e evitar respostas inadequadas.
+---
 
-Google AI Studio: Essencial para prototipar rapidamente diferentes prompts e fluxos de conversa para o chatbot, testando a capacidade do Gemini de responder de forma empática e coletar dados de forma não intrusiva antes de escrever o código principal.
+## 📁 Estrutura do Projeto
 
-Google Colab: Ambiente de desenvolvimento em Python. Perfeito para integrar as APIs, implementar a lógica do agente autônomo, gerenciar a criptografia, processar os dados coletados pelo chatbot e gerar os relatórios. Precisaremos de bibliotecas como google-api-python-client para as APIs do Google e uma biblioteca de criptografia como PyCryptodome para AES.
+AnonGuard/
+│
+├── .github/                # Arquivos específicos do GitHub (ex: templates de issue)
+│   └── ISSUE_TEMPLATE/
+│       ├── bug_report.md
+│       └── feature_request.md
+│
+├── .gitignore              # Especifica arquivos não rastreados pelo Git (ex: __pycache__, .env, venv/)
+├── .env.example            # Arquivo de exemplo para variáveis de ambiente
+├── LICENSE                 # Arquivo de licença do projeto (ex: MIT)
+├── README.md               # Documentação principal do projeto (detalhes abaixo)
+├── requirements.txt        # Dependências Python (google-generativeai, pycryptodome, etc.)
+│
+├── src/                    # Código fonte principal do projeto
+│   ├── __init__.py
+│   │
+│   ├── chatbot/            # Lógica e interações do chatbot com Gemini
+│   │   ├── __init__.py
+│   │   ├── gemini_interface.py # Funções: get_gemini_response_empathy, get_gemini_intent, get_gemini_data_collection, get_gemini_schedule_data. Inicialização do 'model'.
+│   │   └── prompts.py          # Constantes com os system_prompts para organização.
+│   │
+│   ├── agent/              # Lógica do agente autônomo e orquestração
+│   │   ├── __init__.py
+│   │   ├── orchestrator.py   # O loop principal da conversa, gerenciamento de estado (current_conversation_state, etc.), lógica de decisão.
+│   │   ├── report_generator.py # Função simulate_pdf_generation (e futuramente a real com reportlab/fpdf).
+│   │   └── action_handler.py # (Opcional) Funções que disparam ações finais (upload, agendamento), se separadas do orchestrator.
+│   │
+│   ├── core/               # Funcionalidades centrais e compartilhadas
+│   │   ├── __init__.py
+│   │   ├── config.py         # Carregamento de API Keys (GEMINI_API_KEY), ENCRYPTION_KEY. Abstrai o userdata.get e os.getenv.
+│   │   └── encryption.py     # Funções encrypt_data_aes e decrypt_data_aes.
+│   │
+│   ├── apis/               # Módulos de integração com APIs externas
+│   │   ├── __init__.py
+│   │   ├── google_drive_handler.py # Função simulate_google_drive_upload (e futuramente a real com OAuth2 e API).
+│   │   ├── google_calendar_handler.py# Função simulate_google_calendar_event (e futuramente a real).
+│   │   └── discord_webhook_handler.py# (Opcional) Para alertas no Discord.
+│   │
+│   └── utils/              # Funções utilitárias
+│       ├── __init__.py
+│       └── dialog_helpers.py # Funções como ask_next_denuncia_question, ask_next_schedule_question.
+│
+├── notebooks/              # Jupyter/Colab notebooks para experimentação e desenvolvimento
+│   ├── AnonGuard_Pro_Development.ipynb # Seu notebook atual pode ser adaptado aqui.
+│   └── archive/                        # Notebooks mais antigos ou testes específicos.
+│
+├── docs/                   # Documentação adicional (diagramas de arquitetura, etc.)
+│   └── architecture_overview.md
+│
+├── tests/                  # Testes unitários e de integração (a serem desenvolvidos)
+│   ├── chatbot/
+│   │   └── test_gemini_interface.py
+│   ├── core/
+│   │   └── test_encryption.py
+│   └── agent/
+│       └── test_orchestrator.py
+│
+└── main.py                 # Ponto de entrada principal para rodar a aplicação (importa e inicia o orchestrator).
 
-Extras:
+*(Para uma descrição mais detalhada da estrutura e responsabilidades de cada módulo, consulte o código dentro de `src/`)*
 
-Google Drive API: Usada para armazenar os relatórios gerados de forma segura. Os arquivos devem ser criptografados antes de serem enviados para o Drive, garantindo que mesmo que o Drive seja comprometido, os dados permaneçam ilegíveis sem a chave de criptografia.
+---
 
-Google Calendar API: O agente autônomo pode usar esta API para agendar automaticamente um lembrete ou um evento (como uma consulta inicial com uma ONG parceira, se a vítima consentir), baseando-se nas informações e no consentimento obtidos na conversa com o chatbot.
+## ⚙️ Configuração e Instalação (Desenvolvimento)
 
-Discord Webhook (opcional): Pode ser configurado para enviar alertas anonimizados para uma equipe de moderação ou suporte em tempo real, caso o chatbot detecte uma situação de risco extremo baseada em keywords ou no fluxo da conversa (sem identificar o usuário).
+**Pré-requisitos:**
+* Python 3.8+
+* Conta Google e acesso à API do Google Gemini.
+* Chave de API para o Google Gemini.
+* (Futuramente) Credenciais OAuth2 para Google Drive e Calendar APIs.
 
-Considerações Técnicas e de Segurança:
+**Passos:**
 
+1.  **Clone o repositório:**
+    ```bash
+    git clone [https://github.com/seu-usuario/AnonGuard-Pro.git](https://github.com/seu-usuario/AnonGuard-Pro.git)
+    cd AnonGuard-Pro
+    ```
 
+2.  **Crie e ative um ambiente virtual (recomendado):**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # No Windows: venv\Scripts\activate
+    ```
 
-Criptografia: Implementar AES-256 para criptografar os dados coletados antes de salvar no Google Drive. A chave de criptografia deve ser gerenciada de forma segura (idealmente não armazenada junto com os dados ou no código-fonte, mas para um protótipo, podemos simplificar, deixando claro a ressalva).
+3.  **Instale as dependências:**
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-API Keys: Nunca embutir API keys diretamente no código. Usar variáveis de ambiente ou um arquivo .env carregado de forma segura no Colab.
+4.  **Configure as variáveis de ambiente:**
+    * Copie o arquivo `.env.example` para `.env`:
+        ```bash
+        cp .env.example .env
+        ```
+    * Edite o arquivo `.env` e adicione suas chaves:
+        ```dotenv
+        # Chave da API do Google Gemini
+        GEMINI_API_KEY="SUA_CHAVE_API_GEMINI_AQUI"
 
-Tratamento de Dados Sensíveis: O código deve ser cuidadoso ao manipular as informações coletadas, minimizando o tempo que os dados ficam em memória e garantindo que apenas os dados necessários e anonimizados sejam processados ou armazenados.
+        # Chave de criptografia (DEVE ter 32 bytes para AES-256)
+        # Exemplo (NÃO USE ESTA EM PRODUÇÃO, GERE UMA SEGURA):
+        ENCRYPTION_KEY="uma_chave_segura_de_exatamente_32_bytes"
 
-Error Handling: Implementar blocos try...except para lidar com falhas nas chamadas de API (Gemini, Drive, Calendar) e garantir que o sistema não quebre inesperadamente, oferecendo feedback adequado ao usuário.
+        # Futuramente: Caminho para o arquivo de credenciais do Google Cloud (OAuth2)
+        # GOOGLE_APPLICATION_CREDENTIALS="caminho/para/seu/arquivo-de-credenciais.json"
+        ```
+    * **⚠️ Importante sobre `ENCRYPTION_KEY`:** Para produção, esta chave NUNCA deve ser codificada diretamente ou armazenada no repositório de forma insegura. Considere usar um sistema de gerenciamento de segredos. Para este protótipo, ela é definida via `.env`. **NÃO FAÇA COMMIT do arquivo `.env` com chaves reais.** Adicione `.env` ao seu `.gitignore` (já deve estar lá).
+    * No código atual (Colab), a `GEMINI_API_KEY` é carregada via `userdata.get()`. A estrutura modularizada em `src/core/config.py` deve priorizar o uso de variáveis de ambiente do `.env` para desenvolvimento local fora do Colab.
 
+5.  **Para desenvolvimento inicial em Colab (opcional):**
+    * Faça upload dos arquivos `.py` relevantes para o seu ambiente Colab ou monte seu Google Drive.
+    * Configure os "Secrets" do Colab para `GEMINI_API_KEY` e `ENCRYPTION_KEY` se preferir não usar um arquivo `.env` no Colab.
 
+---
 
-3. Divisão de Tarefas
+## 🚀 Como Usar (Versão Atual de Desenvolvimento)
 
-(Como equipe: você, Elliot e Darlene)
+1.  Certifique-se de que as configurações (passo 4 acima) estão corretas.
+2.  Execute o ponto de entrada principal:
+    ```bash
+    python main.py
+    ```
+3.  O chatbot iniciará no console, e você poderá interagir com ele. As funcionalidades de denúncia e agendamento seguirão o fluxo de perguntas, com as ações finais (upload, criação de evento) sendo **simuladas** e exibidas no console.
 
+**Exemplo de fluxo de interação:**
+1.  Usuário inicia a conversa.
+2.  Chatbot (AnonGuard) responde empaticamente e tenta identificar a intenção.
+3.  Se a intenção for "Fazer Denúncia":
+    * O chatbot inicia a coleta de dados estruturada.
+    * Ao final, o agente simula a geração de um PDF, criptografa os dados e simula o upload para o Google Drive.
+4.  Se a intenção for "Agendamento":
+    * O chatbot coleta dados para o agendamento.
+    * Ao final, o agente simula a criação do evento no Google Calendar.
+5.  Se a intenção for "Suporte Emocional":
+    * O chatbot mantém uma conversa empática.
 
-- Chatbot (Gemini): Projetar prompts para empatia, coleta de dados estruturada, identificação de intenção (denúncia, suporte, agendamento). Implementar a chamada da API do Gemini no Colab - ferramentas são Google AI Studio, Python
+---
 
-- Criptografia de dados: Implementar funções de criptografia e descriptografia AES-256. Definir formato dos dados a serem criptografados (e.g., JSON). Gerenciar a chave (para o protótipo, definir como será tratada) - ferramentas são Python (Colab), "PyCryptodome"
+## 🛡️ Considerações de Segurança
 
-- Integração com APIs: Configurar autenticação (OAuth2). Escrever funções para: 1) Upload de arquivo criptografado no Drive. 2) Criação de evento no Calendar. 3) Opcional: Enviar alerta via Discord Webhook - ferramentas são Python (Colab), Google APIs
+* **Criptografia:** Dados coletados para relatórios são criptografados com AES-256 (atualmente simulado, a biblioteca `PyCryptodome` está sendo usada). A chave (`ENCRYPTION_KEY`) é crucial e deve ser gerenciada com segurança.
+* **Chaves de API:** `GEMINI_API_KEY` e futuras credenciais do Google Cloud devem ser gerenciadas via variáveis de ambiente (ou segredos do Colab) e NUNCA incluídas no código-fonte.
+* **Tratamento de Dados Sensíveis:** O código busca minimizar o tempo que os dados ficam em memória e anonimizar informações sempre que possível. Este é um ponto de atenção contínuo.
+* **Anonimato:** A prioridade é o anonimato do usuário, especialmente na denúncia.
+* **Error Handling:** O código inclui blocos `try...except` para lidar com falhas, mas precisa de refinamento contínuo.
 
-- Lógica do Agente Autônomo: Orquestrar o fluxo: receber dados do chatbot, chamar funções de criptografia/API, gerar PDF (usando uma lib como reportlab ou fpdf), decidir qual ação tomar (salvar relatório, agendar) - Elliot/Darlene
+---
 
-- Documentação (GitHub): Escrever README claro (instalação, uso, arquitetura, notas de segurança). Adicionar comentários explicativos no código. Gravar e editar o vídeo de demonstração - ferramentas são README.md, Vídeo, Code Comments
+## 📝 Divisão das Tarefas
+
+Conforme planejado:
+
+* **Chatbot (Gemini):** Projetar prompts para empatia, coleta de dados estruturada, identificação de intenção. Implementar a chamada da API do Gemini.
+    * *Ferramentas:* Google AI Studio, Python (`google-generativeai`).
+    * *Status Atual:* Funções de interação com Gemini implementadas (`get_gemini_...`), prompts definidos.
+* **Criptografia de dados:** Implementar funções de criptografia e descriptografia AES-256. Definir formato dos dados. Gerenciar a chave.
+    * *Ferramentas:* Python (`PyCryptodome`).
+    * *Status Atual:* Funções de simulação de criptografia/descriptografia AES implementadas.
+* **Integração com APIs (Google Drive, Calendar, Discord):** Configurar autenticação (OAuth2). Escrever funções para upload, criação de evento, alertas.
+    * *Ferramentas:* Python, Google APIs.
+    * *Status Atual:* **Simulado.** Esta é uma das próximas etapas de desenvolvimento.
+* **Lógica do Agente Autônomo:** Orquestrar o fluxo: receber dados do chatbot, chamar funções de criptografia/API, gerar PDF, decidir qual ação tomar.
+    * *Ferramentas:* Python, `reportlab`/`fpdf`.
+    * *Status Atual:* Lógica de orquestração básica implementada no loop principal. Geração de PDF **simulada**.
+* **Documentação (GitHub):** Escrever README claro, comentários no código, vídeo de demonstração.
+    * *Ferramentas:* Markdown, Vídeo, Comentários no código.
+    * *Status Atual:* Este README é o início. Comentários no código existem.
+
+---
+
+## 🤝 Contribuição
+
+*(Esta seção pode ser expandida se o projeto se tornar aberto a contribuições externas futuramente)*
+
+No momento, o projeto está sendo desenvolvido somente por mim. Caso no futuro queira participar deste projeto siga os passos:
+1.  Crie uma Branch para sua Feature (`git checkout -b feature/MinhaNovaFeature`).
+2.  Faça Commit suas mudanças (`git commit -m 'Adiciona MinhaNovaFeature'`).
+3.  Faça Push para a Branch (`git push origin feature/MinhaNovaFeature`).
+4.  Abra um Pull Request para a `main` (ou `develop`, se usada).
+
+---
+
+## 📜 Licença
+
+Distribuído sob a Licença MIT.
+
+---
+
+## 📞 Contato
+
+Nome do Projeto Link: [https://github.com/lucas-lins-lima/AnonGuard](https://github.com/lucas-lins-lima/AnonGuard) ---
+
+## 📹 Vídeo de Demonstração (A ser adicionado que será posto pelo YouTube)
+
+*(Link para o vídeo de demonstração quando estiver pronto)*
+
+---
+
+## 🛣️ Próximos Passos / Roadmap
+
+Abaixo estão os marcos já alcançados e os próximos passos planejados para o AnonGuard:
+
+**Funcionalidades e Módulos Implementados (Protótipo/Base):**
+
+* **Chatbot (Interação com Gemini):**
+    * [x] Design e implementação de prompts para:
+        * [x] Suporte emocional empático.
+        * [x] Identificação de intenção do usuário.
+        * [x] Coleta de dados estruturada para denúncias.
+        * [x] Coleta de dados estruturada para agendamentos.
+    * [x] Implementação das chamadas à API do Gemini para todas as funcionalidades de conversação listadas acima.
+* **Criptografia de Dados (Base):**
+    * [x] Implementação de funções de criptografia (AES-256 com PyCryptodome) e descriptografia para os dados da denúncia.
+    * [x] Definição do formato dos dados a serem criptografados (conteúdo do relatório em texto).
+    * [x] Mecanismo para gerenciamento da chave de criptografia via variável de ambiente (para prototipagem).
+* **Lógica do Agente Autônomo (Orquestração Inicial):**
+    * [x] Orquestração do fluxo principal da conversa, alternando entre estados (suporte, coleta para denúncia, coleta para agendamento) com base na intenção identificada.
+    * [x] Chamada das funções de coleta de dados do chatbot.
+    * [x] Chamada da função de criptografia para os dados da denúncia.
+    * [x] Simulação das seguintes ações do agente:
+        * [x] Geração de conteúdo para o relatório PDF.
+        * [x] Upload do relatório criptografado para o Google Drive.
+        * [x] Criação de evento no Google Calendar.
+* **Documentação e Código:**
+    * [x] Código fonte inicial com comentários explicativos e docstrings.
+    * [x] Elaboração da estrutura inicial e conteúdo do `README.md`.
+
+**Próximas Implementações e Melhorias:**
+
+* **Integração Real com APIs Google:**
+    * [ ] Configurar autenticação OAuth2 segura para Google Drive e Google Calendar.
+    * [ ] Substituir a simulação pela implementação real do upload de arquivos criptografados para o Google Drive.
+    * [ ] Substituir a simulação pela implementação real da criação de eventos no Google Calendar.
+* **Geração de Relatórios em PDF:**
+    * [ ] Integrar uma biblioteca como `reportlab` ou `fpdf` para gerar os relatórios de denúncia em formato PDF antes da criptografia.
+* **Funcionalidade de Orientação e Informação:**
+    * [ ] Desenvolver o fluxo e a base de conhecimento para "Buscar Informações/Orientação", permitindo ao chatbot fornecer informações sobre direitos, ONGs e próximos passos de forma conversacional.
+* **Aprimoramentos de Robustez e Segurança:**
+    * [ ] Melhorar o tratamento de exceções em todo o sistema para maior resiliência.
+    * [ ] Implementar um sistema de logging mais estruturado e detalhado (substituindo os `print` de debug).
+    * [ ] Realizar uma revisão completa do fluxo de dados sensíveis e da implementação da criptografia, visando melhores práticas.
+    * [ ] Planejar e executar testes de segurança.
+* **Testes Automatizados:**
+    * [ ] Escrever testes unitários para os principais módulos (chatbot, criptografia, agente).
+    * [ ] Desenvolver testes de integração para os fluxos completos.
+* **Interface do Usuário (Consideração Futura):**
+    * [ ] Avaliar e, se aplicável, desenvolver uma interface de usuário mais amigável além do console (ex: interface web simples, integração com plataformas de mensagem).
+* **Webhook Discord (Consideração futura):**
+    * [ ] Se decidido como prioritário, implementar o envio de alertas anonimizados para uma equipe de moderação via Discord Webhook em situações de risco extremo detectadas.
+* **Documentação Final e Demonstração:**
+    * [ ] Finalizar e refinar toda a documentação do projeto.
+    * [ ] Gravar e editar um vídeo de demonstração do AnonGuard.
