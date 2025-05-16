@@ -321,3 +321,10 @@ Abaixo estão os marcos já alcançados e os próximos passos planejados para o 
 * **Documentação Final e Demonstração:**
     * [ ] Finalizar e refinar toda a documentação do projeto.
     * [ ] Gravar e editar um vídeo de demonstração do AnonGuard.
+
+## 🗃 Histórico de lançamentos
+
+* 0.1.0 - 15/05/2025
+    * Chatbot (Gemini), criptografia de dados, estruturação do projeto e organização do GitHub realizados
+* 0.2.0 - 16/05/2025
+    * Integração com APIs (Google Drive, Calendar e Discord), lógica do agente autônomo e atualização do readme realizados
