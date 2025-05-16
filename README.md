@@ -105,6 +105,7 @@ AnonGuard-Pro/
 │       └── test_orchestrator.py
 │
 └── main.py
+
 *(Para uma descrição mais detalhada da estrutura e responsabilidades de cada módulo, consulte o código dentro de `src/`)*
 
 ---
