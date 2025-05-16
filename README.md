@@ -107,7 +107,27 @@ AnonGuard/
 └── main.py
 ```
 
-*(Para uma descrição mais detalhada da estrutura e responsabilidades de cada módulo, consulte o código dentro de `src/`)*
+
+**Explicação dos principais diretórios:**
+
+- `.github/`: Contém configurações específicas do GitHub, como templates para issues.
+- `src/`: O coração do projeto, onde todo o código fonte em Python reside.
+  - `chatbot/`: Responsável pela lógica de conversação e interação com a API do Gemini.
+  - `agent/`: Contém a lógica do agente autônomo, orquestração do fluxo e ações.
+  - `core/`: Módulos centrais como configuração (API keys, etc.) e criptografia.
+  - `apis/`: Módulos para interagir com APIs externas (Google Drive, Calendar, etc.).
+  - `utils/`: Funções utilitárias que podem ser usadas em várias partes do projeto.
+- `notebooks/`: Para Jupyter Notebooks ou Google Colab files usados em desenvolvimento, experimentação e prototipagem.
+- `docs/`: Documentação adicional, como diagramas de arquitetura, guias detalhados, etc.
+- `tests/`: Contém os testes automatizados (unitários, de integração).
+- `main.py`: O ponto de entrada principal para executar a aplicação.
+
+**Arquivos na raiz:**
+  - `.gitignore`: Especifica quais arquivos e pastas o Git deve ignorar.
+  - `.env.example`: Um modelo para o arquivo .env que armazenará as variáveis de ambiente.
+  - `LICENSE`: O arquivo de licença do projeto.
+  - `README.md`: O arquivo que você está lendo, com a documentação principal.
+  - `requirements.txt`: Lista todas as dependências Python do projeto.
 
 ---
 
