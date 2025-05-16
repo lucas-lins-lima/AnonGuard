@@ -88,7 +88,7 @@ AnonGuard/
 │       └── dialog_helpers.py
 │
 ├── notebooks/
-│   ├── AnonGuard_Pro_Development.ipynb
+│   ├── AnonGuard_Development.ipynb
 │   └── archive/
 │       └── (outros notebooks de teste ou versões antigas)
 │
@@ -143,8 +143,8 @@ AnonGuard/
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/seu-usuario/AnonGuard-Pro.git](https://github.com/seu-usuario/AnonGuard-Pro.git)
-    cd AnonGuard-Pro
+    git clone [https://github.com/seu-usuario/AnonGuard.git](https://github.com/seu-usuario/AnonGuard.git)
+    cd AnonGuard
     ```
 
 2.  **Crie e ative um ambiente virtual (recomendado):**
