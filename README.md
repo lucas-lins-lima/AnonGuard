@@ -44,8 +44,7 @@ O AnonGuard é um sistema projetado para oferecer um espaço seguro e anônimo p
 
 Abaixo, a organização para os diretórios e arquivos principais do AnonGuard:
 
-```text
-AnonGuard-Pro/
+AnonGuard/
 │
 ├── .github/
 │   └── ISSUE_TEMPLATE/
