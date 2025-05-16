@@ -42,56 +42,61 @@ O AnonGuard é um sistema projetado para oferecer um espaço seguro e anônimo p
 
 ## 📁 Estrutura do Projeto
 
-AnonGuard/
+Abaixo, a organização para os diretórios e arquivos principais do AnonGuard:
+
+```text
+AnonGuard-Pro/
 │
-├── .github/                # Arquivos específicos do GitHub (ex: templates de issue)
+├── .github/
 │   └── ISSUE_TEMPLATE/
 │       ├── bug_report.md
 │       └── feature_request.md
 │
-├── .gitignore              # Especifica arquivos não rastreados pelo Git (ex: __pycache__, .env, venv/)
-├── .env.example            # Arquivo de exemplo para variáveis de ambiente
-├── LICENSE                 # Arquivo de licença do projeto (ex: MIT)
-├── README.md               # Documentação principal do projeto (detalhes abaixo)
-├── requirements.txt        # Dependências Python (google-generativeai, pycryptodome, etc.)
+├── .gitignore
+├── .env.example
+├── LICENSE
+├── README.md
+├── requirements.txt
 │
-├── src/                    # Código fonte principal do projeto
+├── src/
 │   ├── __init__.py
 │   │
-│   ├── chatbot/            # Lógica e interações do chatbot com Gemini
+│   ├── chatbot/
 │   │   ├── __init__.py
-│   │   ├── gemini_interface.py # Funções: get_gemini_response_empathy, get_gemini_intent, get_gemini_data_collection, get_gemini_schedule_data. Inicialização do 'model'.
-│   │   └── prompts.py          # Constantes com os system_prompts para organização.
+│   │   ├── gemini_interface.py
+│   │   └── prompts.py
 │   │
-│   ├── agent/              # Lógica do agente autônomo e orquestração
+│   ├── agent/
 │   │   ├── __init__.py
-│   │   ├── orchestrator.py   # O loop principal da conversa, gerenciamento de estado (current_conversation_state, etc.), lógica de decisão.
-│   │   ├── report_generator.py # Função simulate_pdf_generation (e futuramente a real com reportlab/fpdf).
-│   │   └── action_handler.py # (Opcional) Funções que disparam ações finais (upload, agendamento), se separadas do orchestrator.
+│   │   ├── orchestrator.py
+│   │   ├── report_generator.py
+│   │   └── action_handler.py
 │   │
-│   ├── core/               # Funcionalidades centrais e compartilhadas
+│   ├── core/
 │   │   ├── __init__.py
-│   │   ├── config.py         # Carregamento de API Keys (GEMINI_API_KEY), ENCRYPTION_KEY. Abstrai o userdata.get e os.getenv.
-│   │   └── encryption.py     # Funções encrypt_data_aes e decrypt_data_aes.
+│   │   ├── config.py
+│   │   └── encryption.py
 │   │
-│   ├── apis/               # Módulos de integração com APIs externas
+│   ├── apis/
 │   │   ├── __init__.py
-│   │   ├── google_drive_handler.py # Função simulate_google_drive_upload (e futuramente a real com OAuth2 e API).
-│   │   ├── google_calendar_handler.py# Função simulate_google_calendar_event (e futuramente a real).
-│   │   └── discord_webhook_handler.py# (Opcional) Para alertas no Discord.
+│   │   ├── google_drive_handler.py
+│   │   ├── google_calendar_handler.py
+│   │   └── discord_webhook_handler.py
 │   │
-│   └── utils/              # Funções utilitárias
+│   └── utils/
 │       ├── __init__.py
-│       └── dialog_helpers.py # Funções como ask_next_denuncia_question, ask_next_schedule_question.
+│       └── dialog_helpers.py
 │
-├── notebooks/              # Jupyter/Colab notebooks para experimentação e desenvolvimento
-│   ├── AnonGuard_Pro_Development.ipynb # Seu notebook atual pode ser adaptado aqui.
-│   └── archive/                        # Notebooks mais antigos ou testes específicos.
+├── notebooks/
+│   ├── AnonGuard_Pro_Development.ipynb
+│   └── archive/
+│       └── (outros notebooks de teste ou versões antigas)
 │
-├── docs/                   # Documentação adicional (diagramas de arquitetura, etc.)
+├── docs/
 │   └── architecture_overview.md
 │
-├── tests/                  # Testes unitários e de integração (a serem desenvolvidos)
+├── tests/
+│   ├── __init__.py
 │   ├── chatbot/
 │   │   └── test_gemini_interface.py
 │   ├── core/
@@ -99,8 +104,7 @@ AnonGuard/
 │   └── agent/
 │       └── test_orchestrator.py
 │
-└── main.py                 # Ponto de entrada principal para rodar a aplicação (importa e inicia o orchestrator).
-
+└── main.py
 *(Para uma descrição mais detalhada da estrutura e responsabilidades de cada módulo, consulte o código dentro de `src/`)*
 
 ---
